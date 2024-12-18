@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<body>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/PSA-add.css}">
+</th:block>
+
+<th:block layout:fragment="MainBodyContents">
+    <div class="PSA-container">
+        <h1 class="PSA-title">공지사항 추가</h1>
+
+        <!-- 에러 메시지 -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <!-- 공지 추가 폼 -->
+        <form th:action="@{/PSA-add}" method="post" class="PSA-add-form">
+            <!-- 제목 입력 -->
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" placeholder="공지 제목을 입력하세요" required>
+            </div>
+
+            <!-- 내용 입력 -->
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea id="content" name="content" placeholder="공지 내용을 입력하세요" rows="5" required></textarea>
+            </div>
+
+            <!-- 버튼들 -->
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">작성</button>
+                <a th:href="@{/PSA-list}" class="btn btn-secondary">목록</a>
+            </div>
+        </form>
+
+    </div>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}">
+<body>
+
+<th:block layout:fragment="MainBodyContents">
+  <!-- 메인 뷰 -->
+  <div class="container">
+    <div class="index">
+      <!-- d-flex를 사용해 세로와 가로 모두 중앙 정렬 -->
+      <div class="index-con d-flex flex-column align-items-center justify-content-center" style="height: 90vh;">
+        <!-- 축하 메시지 중앙 정렬, 글씨 크기 크게 -->
+        <h1 class="text-center display-3">탈퇴가 완료 되었습니다.</h1>
+        <!-- 메인 페이지로 가는 링크 중앙 정렬, 상단과 여백 -->
+        <div class="text-center mt-4">
+          <a class="nav-link text-decoration-underline" th:href="@{/}">메인페이지로 가기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+</body>
+</html>

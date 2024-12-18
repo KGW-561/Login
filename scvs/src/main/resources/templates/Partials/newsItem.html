@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="newsItem(author,date,title,image,link)">
+  <a class="news-link" th:href="${link}">
+    <p class="media-company-color"><th:block th:text="${author}"/> -</p>
+    <p class="date-color"> <th:block th:text="${#temporals.format(date, 'yyyy-MM-dd HH:mm:ss')}"/></p>
+    <div class="news-item">
+      <h4 class="news-title"><th:block th:text="${title}"/></h4>
+      <img th:if="${image != null}" th:src="${image}" alt="News Image" class="news-images">
+    </div>
+  </a>
+</div>
+
+</html>

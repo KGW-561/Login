@@ -1,0 +1,360 @@
+/* 전체 */
+body {
+    font-family: "Nanum Gothic", sans-serif; /* 폰트: 나눔 고딕 */
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+/* 경제 뉴스 페이지 */
+.econ-news-container {
+    display: grid; /* 그리드 레이아웃 */
+    place-items: center; /* 가로, 세로 가운데 정렬 */
+    grid-template-columns: 2fr 1fr; /* 좌측 뉴스 섹션(2/3)과 우측 지표(1/3) */
+    grid-template-rows: auto auto; /* 상단과 하단 */
+    margin: 20px auto; /* 상하 20px, 좌우 자동으로 가운데 정렬이 되도록 설정 */
+    max-width: 70vw; /* 최대 너비 */
+    height: 79vh;
+}
+
+/* 경제 뉴스 리스트 */
+.econ-news {
+    grid-column: 1 / 2; /* 좌측 */
+    grid-row: 1 / 3; /* 상단과 하단 모두 포함 */
+    padding: 40px;
+}
+
+/* 경제 뉴스 */
+.econ-news h2 {
+    font-size: 24px;
+    color: #000;
+    border-bottom: 2px solid #333; /* 구분선 */
+    padding-bottom: 8px; /* 구분선과의 간격 */
+}
+
+/* 기사 */
+.news-item {
+    display: flex; /* 플렉스 레이아웃 */
+    align-items: center; /* 수직 가운데 정렬 */
+    margin-bottom: 20px;
+    gap: 20px; /* 텍스트와 이미지 간격 */
+    border-bottom: 1px solid #ccc; /* 구분선 */
+    padding-bottom: 10px; /* 구분선과의 간격 */
+    width: 50vw;
+}
+
+/* 기사 정보 */
+.news-item .text-content {
+    display: flex; /* 플렉스 레이아웃 */
+    flex-direction: column; /* 세로 정렬 */
+    flex-grow: 1; /* 이미지 위치를 우측으로 고정 */
+}
+.news-item .text-content .source-publishedAt {
+    display: flex; /* 플렉스 레이아웃 */
+    gap: 10px; /* media와 date 간 간격 */
+    font-size: 10px;
+}
+
+/* 언론사 */
+.source {
+    color: #555;
+    font-weight: demi-light;
+}
+
+/* 작성일 */
+.publishedAt {
+    color: #777;
+    font-weight: light;
+}
+
+/* 기사 제목 */
+.news-item h4 {
+    font-size: 18px;
+    cursor: pointer; /* 마우스 커서가 손 모양으로 바뀜 */
+    margin: 0;
+}
+
+/* 제목 링크 */
+.news-item h4 a.news-title {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #000;
+    font-weight: semi-bold;
+}
+
+/* 이미지 스타일 */
+.news-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover; /* 이미지가 잘리더라도 1:1 비율 유지 */
+    background-color: #ccc;
+}
+
+/* 페이징 */
+.pagination {
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 10px; /* 페이지 숫자끼리의 간격 */
+    margin-top: 20px;
+}
+
+/* 현재 페이지 */
+.current-page {
+    color: #000;
+    font-weight: semi-bold;
+    border: none; /* 테두리 제거 */
+    padding: 0;
+    background: none; /* 배경색 제거 */
+}
+
+/* 맨 앞 페이지 (삼각형) */
+.first-page {
+    position: relative;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #eee;
+}
+/* 맨 앞 페이지 (막대 직사각형) */
+.first-page::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    width: 2px;
+    height: 16px;
+    background-color: #eee;
+}
+/* 맨 앞 페이지에 마우스를 올렸을 때 */
+.first-page:hover {
+    border-right-color: #ccc; /* 삼각형의 색상 변화 */
+}
+.first-page:hover::after {
+    background-color: #ccc; /* 막대 직사각형의 색상 변화 */
+}
+
+/* 이전 페이지 (삼각형) */
+.previous-page {
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #eee;
+}
+/* 이전 페이지에 마우스를 올렸을 때 */
+.previous-page:hover {
+    border-right-color: #ccc; /* 삼각형의 색상 변화 */
+}
+
+/* 페이지 링크 */
+.page-link {
+    color: #ccc;
+    border: none; /* 테두리 제거 */
+    padding: 0;
+    background: none; /* 배경색 제거 */
+}
+/* 페이지 링크에 마우스를 올렸을 때 */
+.page-link:hover {
+    color: #000;
+    border: none; /* 테두리 제거 */
+    background: none; /* 배경색 제거 */
+}
+/* 페이지 링크를 클릭했을 때 */
+.page-link:focus, .page-link:active {
+    box-shadow: none; /* 그림자 제거 */
+}
+
+/* 다음 페이지 (삼각형) */
+.next-page {
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #eee;
+}
+/* 다음 페이지에 마우스를 올렸을 때 */
+.next-page:hover {
+    border-left-color: #ccc; /* 삼각형의 색상 변화 */
+}
+
+/* 맨 뒤 페이지 (삼각형) */
+.last-page {
+    position: relative;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #eee;
+}
+/* 맨 뒤 페이지 (막대 직사각형) */
+.last-page::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -12px;
+    width: 2px;
+    height: 16px;
+    background-color: #eee;
+}
+/* 맨 뒤 페이지에 마우스를 올렸을 때 */
+.last-page:hover {
+    border-left-color: #ccc; /* 삼각형의 색상 변화 */
+}
+.last-page:hover::before {
+    background-color: #ccc; /* 막대 직사각형의 색상 변화 */
+}
+
+/* 사이드(환율, 지표) */
+.side {
+    grid-column: 3 / 3; /* 우측 */
+    grid-row: 1 / 2; /* 상단 */
+    padding: 20px;
+    max-width: 15vw;
+}
+
+/* 환율 정보 */
+.rate {
+    display: flex; /* 플렉스 레이아웃 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가로 가운데 정렬 */
+    gap: 10px; /* 요소끼리의 간격 */
+    width: 15vw; /* 너비 설정 */
+    padding-bottom: 20px; /* 외부 여백 추가 */
+}
+
+/* 환율 심볼 */
+.currency-symbol {
+    font-size: 45px;
+    font-weight: semi-bold;
+    color: #333;
+}
+
+/* 환율 */
+.currency-value {
+    font-size: 35px;
+    font-weight: semi-bold;
+    color: #000;
+}
+
+/* 변동값 및 변동률 */
+.currency-change {
+    display: flex; /* 플렉스 레이아웃 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    gap: 5px; /* 도형과 텍스트 간 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 환율 변동 삼각형 */
+.triangle {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 5px;
+}
+/* 변동값이 양수: 위로 향하는 삼각형 */
+.triangle.up {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 10px solid #D24C75; /* 빨간색 */
+}
+/* 변동값이 음수: 아래로 향하는 삼각형 */
+.triangle.down {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #3296FF; /* 파란색 */
+}
+/* 변동값이 0: 가로로 긴 직사각형 */
+.triangle.stay {
+    width: 10px;
+    height: 2px;
+    background-color: #8c8c8c; /* 회색 */
+}
+
+/* 변동값 및 변동률 */
+.currency-change {
+    font-size: 14px;
+    color: #555;
+
+}
+
+/* 업데이트 날짜 */
+.currency-date {
+    font-size: 12px;
+    color: #777;
+}
+
+/* 지표 */
+.indices {
+    margin-top: 20px; /* 환율 정보 아래 여백 */
+    display: flex; /* 플렉스 레이아웃 */
+    flex-direction: column; /* 세로 정렬 */
+    gap: 10px; /* 각 index-item 간 간격 */
+    padding: 20px; /* 내부 여백 */
+    border-radius: 10px; /* 둥근 모서리 */
+    width: 15vw;
+}
+
+/* 국내/미국 경제 지표 */
+.indices h3 {
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    font-size: 14px; /* 글자 크기 */
+    font-weight: bold; /* 글자 두께 */
+    margin-bottom: 10px; /* 아래쪽 여백 */
+}
+
+/* 지표 요소들 */
+.index-item {
+    display: flex; /* 플렉스 레이아웃 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가로 가운데 정렬 */
+    padding: 15px; /* 내부 여백 */
+    background-color: #ffffff; /* 배경색 */
+    border: 1px solid #e0e0e0; /* 테두리 추가 */
+    border-radius: 10px; /* 둥근 모서리 */
+}
+
+/* 지표명 */
+.index-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px; /* 아래 여백 */
+}
+
+/* 지표값 */
+.index-value {
+    font-size: 14px;
+    color: #000;
+}
+
+/* 변동값 및 변동률 */
+.index-change {
+    font-size: 12px;
+    color: #555;
+}
+
+/* 환율 변동 삼각형 */
+.triangle {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 5px;
+}
+/* 변동값이 양수: 위로 향하는 삼각형 */
+.triangle.up {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 10px solid #D24C75; /* 빨간색 */
+}
+/* 변동값이 음수: 아래로 향하는 삼각형 */
+.triangle.down {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #3296FF; /* 파란색 */
+}
+/* 변동값이 0: 가로로 긴 직사각형 */
+.triangle.stay {
+    width: 10px;
+    height: 2px;
+    background-color: #8c8c8c; /* 회색 */
+}
+
+/* 반응형 디자인 */
+/* max-width는 index.css와 통일 */
+@media screen and (max-width: 992px) {
+
+}

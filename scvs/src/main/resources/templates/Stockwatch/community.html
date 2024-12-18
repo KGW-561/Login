@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/community.css}">
+</th:block>
+<body>
+<th:block layout:fragment="MainBodyContents">
+    <div class="community-container">
+        <div class="Stock-info">
+            <div class="stock-header">
+                <!-- 회사명과 심볼 -->
+                <span class="company-name" th:text="${stockInfo.company}"></span>
+                <span class="symbol" th:text="${stockInfo.symbol}"></span>
+            </div>
+            <!-- 현재 가격 및 투표 -->
+            <div class="stock-price">
+                <!-- 현재 주식 가격 -->
+                <span class="current-price">
+                    <span th:if="${stockInfo.market != null}">
+                        <span th:if="${stockInfo.market == 'KOR'}">₩</span>
+                        <span th:if="${stockInfo.market == 'USA'}">$</span>
+                    </span>
+                    <span th:text="${stockInfo.currentPrice}"></span>
+                </span>
+
+                <!-- 긍정 투표 버튼 -->
+                <form action="/castVote" method="POST" style="display: inline;">
+                    <input type="hidden" name="communityId" th:value="${communityId}" />
+                    <input type="hidden" name="voteType" value="positive" />
+                    <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}" />
+                    <button type="submit" class="vote-button positive-vote">
+                        &#128522; <span th:text="${voteInfo.positiveVotes}"></span>
+                    </button>
+                </form>
+
+                <!-- 부정 투표 버튼 -->
+                <form action="/castVote" method="POST" style="display: inline;">
+                    <input type="hidden" name="communityId" th:value="${communityId}" />
+                    <input type="hidden" name="voteType" value="negative" />
+                    <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}" />
+                    <button type="submit" class="vote-button negative-vote">
+                        &#128542; <span th:text="${voteInfo.negativeVotes}"></span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        <!-- 토론방 -->
+        <div class="community">
+            <form class="comment-form" action="/addComment" method="post">
+                <input type="hidden" name="communityId" th:value="${communityId}"/>
+                <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}"/>
+                <div class="input-section">
+                    <input type="text" class="comment-input" name="commentInput" placeholder="의견을 남겨 보세요" required />
+                    <button type="submit" class="comment-submit">등록</button>
+                </div>
+            </form>
+            <!-- 댓글 리스트 -->
+            <div class="comment-list" style="overflow-y: auto; height: 600px;">
+                <th:block th:if="${commentList != null}">
+                    <th:block th:each="comment : ${commentList}">
+                        <div class="comment-item">
+                            <!-- 닉네임 -->
+                            <span class="nickname" th:text="${comment.nickname}"></span>
+                            <!-- 작성 시간 -->
+                            <span class="time" th:text="${comment.timeAgo}"></span>
+                            <!-- 댓글 내용 -->
+                            <span th:id="'comment-text-' + ${comment.id}" class="comment-text" th:text="${comment.comment}"></span>
+
+                            <!-- 수정 및 삭제 버튼 (본인 글만 표시) -->
+                            <th:block th:if="${comment.userId == userId}">
+                                <div class="comment-actions">
+                                    <!-- 수정 버튼 -->
+                                    <button type="button" class="btn btn-edit" th:onclick="'enableEdit(' + ${comment.id} + ')'">수정</button>
+                                    <!-- 삭제 버튼 -->
+                                    <form action="/deleteComment" method="POST" style="display: inline;">
+                                        <input type="hidden" name="communityCommentId" th:value="${comment.id}" />
+                                        <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}"/>
+                                        <button type="submit" class="btn btn-delete">삭제</button>
+                                    </form>
+                                </div>
+                            </th:block>
+
+                            <th:block th:if="${comment.userId != userId && userRole == 'ROLE_ADMIN'}">
+                                <div class="comment-actions">
+                                    <!-- 삭제 버튼 (관리자용) -->
+                                    <form action="/deleteComment" method="POST" style="display: inline;">
+                                        <input type="hidden" name="communityCommentId" th:value="${comment.id}" />
+                                        <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}"/>
+                                        <button type="submit" class="btn btn-delete">삭제</button>
+                                    </form>
+                                </div>
+                            </th:block>
+
+                            <!-- 댓글 수정 입력창 -->
+                            <form action="/editComment" method="POST" th:id="'edit-form-' + ${comment.id}" style="display: none; align-items: center; gap: 10px; margin: 5px">
+                                <input type="hidden" name="communityCommentId" th:value="${comment.id}" />
+                                <input type="hidden" name="tickerId" th:value="${stockInfo.tickerId}" />
+                                <input type="text" name="editedComment" class="comment-edit-input" th:value="${comment.comment}" required />
+                                <button type="submit" class="btn btn-save">저장</button>
+                                <button type="button" class="btn btn-cancel" th:onclick="'cancelEdit(' + ${comment.id} + ')'">취소</button>
+                            </form>
+                        </div>
+                    </th:block>
+                </th:block>
+                <th:block th:if="${commentList == null || commentList.size() == 0}">
+                    <p class="no-comment">comment가 없습니다</p>
+                </th:block>
+            </div>
+        </div>
+
+        <!-- maker-stats -->
+        <div class="market-stats-wrapper">
+            <h2>Market Stats</h2>
+            <div class="market-stats" th:if="${stocksinfo != null}">
+                <ul>
+                    <li th:if="${stocksinfo.open != null}">
+                        <span>Open:</span>
+                        <span th:text="${stocksinfo.open}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.close != null}">
+                        <span>Close:</span>
+                        <span th:text="${stocksinfo.close}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.volume != null}">
+                        <span>Volume:</span>
+                        <span th:text="${stocksinfo.volume}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.dayLow != null and stocksinfo.dayHigh != null}">
+                        <span>Day Range:</span>
+                        <span th:text="${stocksinfo.dayLow} + ' - ' + ${stocksinfo.dayHigh}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.returnOnEquity != null}">
+                        <span>ROE:</span>
+                        <span th:text="${stocksinfo.returnOnEquity} + '%'"></span>
+                    </li>
+                    <li th:if="${stocksinfo.enterpriseValue != null}">
+                        <span>EV:</span>
+                        <span th:text="${stocksinfo.enterpriseValue}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.enterpriseToEBITDA != null}">
+                        <span>EV/EBITDA:</span>
+                        <span th:text="${stocksinfo.enterpriseToEBITDA}"></span>
+                    </li>
+                    <li th:if="${stocksinfo.priceToBook != null}">
+                        <span>P/B Ratio:</span>
+                        <span th:text="${stocksinfo.priceToBook}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="no-data" th:if="${stocksinfo == null}">
+                <p>마켓 정보가 없습니다</p>
+            </div>
+        </div>
+
+
+        <!-- news -->
+        <div class="news">
+            <h2>Stock News</h2>
+            <ul>
+                <!-- 반복문으로 뉴스 제목 출력 -->
+                <li th:each="news : ${stocknewsinfo}">
+                    <a th:href="@{|/stocknews/${news.tickerId}/${news.Id}|(page=1)}"
+                       th:text="${news.title}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script th:src="@{/js/community.js}"></script>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+      layout:decorate="~{layouts/base}">
+<body>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/login.css}">
+    </th:block>
+<th:block layout:fragment="MainBodyContents">
+    <div class="container-wrapper">
+    <div class="container-login">
+        <h1>이메일 로그인</h1>
+        <h5>가입하신 이메일로 로그인하세요</h5>
+        <form id="login-form" method="post">
+
+            <!-- 이메일 입력 -->
+            <label for="email">e-mail:</label>
+            <input type="text" id="email" name="email">
+
+            <!-- 비밀번호 입력 -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <!-- 로그인 실패 시 경고 메시지 표시 -->
+            <div id="login-validation" class="validation-message"></div>
+            <button type="submit">Log in</button>
+
+            <!-- 회원가입이동 -->
+            <p>
+                아이디가 없으세요?
+                <a href="/signup" class="login-link">회원가입</a>
+            </p>
+        </form>
+        </div>
+    </div>
+    <script th:src="@{/js/login.js}"></script>
+</th:block>
+
+</body>
+</html>

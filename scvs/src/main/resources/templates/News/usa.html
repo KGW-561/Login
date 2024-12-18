@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- head part -->
+<head th:replace="~{layouts/head :: head}">
+    <title>usa</title>
+    <!-- 구글 폰트 '나눔 고딕' 링크 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!-- css part -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/econNews.css}">
+</th:block>
+
+<!-- header part -->
+<div th:replace="~{layouts/header :: header}"></div>
+
+<!-- Main Body Contents -->
+<th:block layout:fragment = "MainBodyContents">
+    <main class="econ-news-container">
+
+        <!-- 미국 경제 뉴스 리스트 -->
+        <section class="econ-news">
+            <h2>미국 경제 뉴스</h2>
+            <br>
+
+            <!-- 동적으로 DB에서 가져온 데이터 출력 -->
+            <div th:each="newsItem : ${usaList}" class="news-item">
+                <div class="text-content">
+                    <div class="source-publishedAt">
+                        <!-- 언론사 -->
+                        <p class="source" th:text="${newsItem.source}"></p>
+                        <!-- 작성일 -->
+                        <p class="publishedAt" th:text="${#temporals.format(newsItem.publishedAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    </div>
+                    <h4>
+                        <!-- 기사 제목을 클릭하면 뉴스 아이디와 현재 머물고 있는 페이지 값을 상세 조회 메서드로 넘겨주기 -->
+                        <a th:href="@{|/usa/${newsItem.usaEconNewsId}|(page=${usaList.number + 1})}" th:text="${newsItem.title}" class="news-title"></a>
+                    </h4>
+                </div>
+                <!-- 뉴스 이미지 -->
+                <img th:if="${newsItem.imageLink != null}" th:src="${newsItem.imageLink}" alt="Unable to load image" width="180" height="90" class="news images">
+            </div>
+
+            <!-- 페이징 처리 -->
+            <div class="pagination">
+                <!-- 첫번째 페이지 -->
+                <a th:href="@{/usa(page=1)}" class="first-page"></a>
+                <!-- 이전 페이지 -->
+                <a th:href="${usaList.first} ? '#' : @{/usa(page=${usaList.number})}" class="previous-page"></a>
+
+                <!-- 페이지 번호 -->
+                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                    <!-- 현재 페이지는 링크 없이 숫자만으로 표시 (usaList.number 값은 실제 페이지보다 1이 작은 값) -->
+                    <span th:if="${page == usaList.number + 1}" th:text="${page}" class="current-page"></span>
+                    <!-- 현재 페이지 외의 페이지들은 숫자에 링크로 표시 -->
+                    <span th:unless="${page == usaList.number + 1}">
+                        <a th:href="@{/usa(page=${page})}" th:text="${page}" class="page-link"></a>
+                    </span>
+                </span>
+
+                <!-- 다음 페이지 -->
+                <a th:href="${usaList.last} ? '#' : @{/usa(page=${usaList.number + 2})}" class="next-page"></a>
+                <!-- 마지막 페이지 -->
+                <a th:href="@{/usa(page=${usaList.totalPages})}" class="last-page"></a>
+            </div>
+        </section>
+
+        <!-- 사이드바 -->
+        <aside class="side">
+
+            <!-- 환율 정보 -->
+            <div class="rate">
+                <div class="currency-symbol">₩ / $</div>
+                <!-- 환율 -->
+                <div class="currency-value" th:text="${#numbers.formatDecimal(forex.rate, 2, 2)}"></div>
+                <div class="currency-change">
+                    <!-- 도형으로 상승, 하락, 유지 표시 -->
+                    <span class="triangle" th:classappend="${forex.changeValue > 0} ? 'up' : (${forex.changeValue < 0} ? 'down' : 'stay')"></span>
+                    <!-- 변동값과 변동률 -->
+                    <span th:text="${#numbers.formatDecimal(forex.changeValue, 2, 2)} + ' ( ' + ${#numbers.formatDecimal(forex.changePercent, 2, 2)} + '% )'"></span>
+                </div>
+                <!-- 업데이트 날짜 -->
+                <div class="currency-date" th:text="${#temporals.format(forex.lastUpdated, 'yyyy-MM-dd HH:mm:ss')} + ' 기준'"></div>
+            </div>
+
+            <!-- 미국 지표 -->
+            <div class="indices">
+                <h3>미국 지표</h3>
+                <div th:each="index : ${indices}">
+                    <div class="index-item">
+                        <p class="index-title" th:text="${index.title}"></p>
+                        <p class="index-value" th:text="${index.currentValue}"></p>
+                        <div class="index-change">
+                            <!-- 도형으로 상승/하락/유지 표시 -->
+                            <span class="triangle"
+                                  th:classappend="${index.changeValue > 0} ? 'up' : (${index.changeValue < 0} ? 'down' : 'stay')"></span>
+                            <!-- 변동값과 변동률 -->
+                            <span th:text="${index.changeValue} + ' (' + ${index.changePercent} + '%)'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+</th:block>
+
+<!-- footer part -->
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

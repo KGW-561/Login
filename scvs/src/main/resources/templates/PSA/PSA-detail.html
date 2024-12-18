@@ -1,0 +1,79 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org"
+          xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+          xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+          layout:decorate="~{layouts/base}">
+
+    <body>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/PSA-detail.css}">
+    </th:block>
+
+    <th:block layout:fragment="MainBodyContents">
+        <div class="PSA-detail-container">
+            <!-- 공지사항 제목 -->
+            <h1 th:text="${psa.title}">공지사항 제목</h1>
+
+            <!-- 작성일 -->
+            <p th:text="'작성일: ' + ${publishedAt}">작성일: 2024-11-20</p>
+
+            <!-- 내용 -->
+            <div class="PSA-content" th:text="${psa.content}">
+                공지사항 상세 내용이 이곳에 표시됩니다.
+            </div>
+
+            <!-- 버튼 그룹 -->
+            <div class="PSA-actions">
+                <!-- 좌측 하단 수정/삭제 버튼 -->
+                <div role="group" aria-label="Action buttons">
+                    <!-- 수정 버튼: 관리자 권한에서만 노출 -->
+                    <a th:href="@{/PSA/update/{id}(id=${psa.id})}" class="btn btn-warning" sec:authorize="hasRole('ROLE_ADMIN')">수정</a>
+
+                    <!-- 삭제 버튼: 관리자 권한에서만 노출 -->
+                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" sec:authorize="hasRole('ROLE_ADMIN')" style="margin-left: 10px;">삭제</a>
+                </div>
+                <!-- 우측 하단 목록 버튼 -->
+                <div class="PSA-back-button">
+                    <a href="/PSA-list" class="btn btn-primary">목록</a>
+                </div>
+            </div>
+        </div>
+
+            <!-- 부트스트랩 모달 -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">공지 삭제</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            삭제한 공지는 복구할 수 없습니다. 정말 삭제하시겠습니까?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <a th:href="@{/PSA/delete/{id}(id=${psa.id})}" class="btn btn-danger">삭제</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="PSA-navigation">
+            <!-- 이전 공지 -->
+            <a th:if="${previousPSA != null}"
+            th:href="@{/PSA-detail/{id}(id=${previousPSA.id})}"
+            class="btn btn-secondary">이전</a>
+
+            <!-- 다음 공지 -->
+            <a th:if="${nextPSA != null}"
+            th:href="@{/PSA-detail/{id}(id=${nextPSA.id})}"
+            class="btn btn-secondary">다음</a>
+        </div>
+
+        </div>
+    </th:block>
+
+
+    </body>
+    </html>
+

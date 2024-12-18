@@ -1,0 +1,167 @@
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+/* 반응형 적용 */
+@media screen and (max-width: 992px) {
+    .news {
+        flex-direction: column; /* 세로로 쌓이도록 설정 */
+        gap: 20px;
+    }
+    .news-column {
+        width: 100%; /* 화면 크기에 맞게 너비를 100%로 설정 */
+    }
+    .stats {
+        width: 100%; /* 우측 경제 지표도 100%로 설정 */
+        margin-left: 0; /* 좌측 여백 제거 */
+        margin-top: 20px;
+    }
+    .stat-item {
+        width: 100%; /* 지표 박스의 너비도 화면에 맞게 조정 */
+    }
+    .news-item {
+        width: 100%; /* 뉴스 아이템의 너비를 화면에 맞춤 */
+    }
+}
+
+/*news 클래스 내부에 news-colum 2개가 종속*/
+.news {
+  display: flex;
+  flex: 3;
+  gap: 20px;
+  font-weight: 100;
+  font-size: small;
+  width: 80%;
+}
+
+/*모든 h2 폰트*/
+h2 {
+  font-size: 30px;
+  font-weight: 500;
+}
+  
+/*news 클래스 내부의 news-colum 클래스 news-colum 클래스 안에는 news-item이 종속되어 있습니다*/
+.news-column {
+  flex: 1;
+}
+
+.media-company-color {
+  font-size: 10px;
+  color: #5e5c5c;
+  display: inline;
+}
+
+.date-color {
+  font-size: 10px;
+  color: #989898;
+  display: inline;
+}
+
+.news-images {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+}
+
+.news-link {
+    color: black;
+    text-decoration: unset;
+}
+
+.news-title{
+    overflow: hidden;
+    max-height: 10vh;
+}
+  
+/*뉴스의 제목과 화면 구조를 꾸미는 클래스 입니다.
+      국내 5개 미국 5개 */
+.news-item {
+  margin-bottom: 20px;
+  display: flex;
+  /*align-items: flex-start;*/
+  gap: 10px;
+  /*width: 30vw;*/
+  /*height: 80px;*/
+}
+  
+/*국내 or 미국 소식 더보기... 탭*/
+.more-btn {
+  display: block;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+}
+  
+/*우측 경제 지표 탭을 꾸미는 클래스  stat-item 클래스들이 종속*/
+.stats {
+  /*flex: 1;*/
+  background: #fff;
+  margin-left: 20px;
+}
+
+/*경제지표가 들어있는 박스 하나라고 생각하시면 됩니다 내부에 #space 종속*/
+.stat-item {
+  margin-bottom: 20px;
+  background-color:#f0eded;
+  /*width: 270px;*/
+  height: 110px;
+  text-align: center;
+  box-shadow: 0 2px 1px rgba(59, 58, 58, 0.3);
+  border-radius: 2px;
+}
+
+/*박스 안의 일부 글자 꾸미기용*/
+.stat-item-space {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+  
+/* 내부자잘한 글자크기 조절용*/
+.index-key {
+  font-size: 1.2em;
+  margin-bottom: 4px;
+}
+
+.index-value {
+  font-size: 1.75em;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+/*내부 자잘한 폰트 및 라인 정리용*/
+.before-line {
+  display: inline;
+}
+
+/*전일대비 빨간색*/
+.before-value-red {
+  color: red;
+  display: inline;
+  font-weight: bold;
+}
+.before-value-dark {
+  color: black;
+  display: inline;
+  font-weight: bold;
+}
+.before-value-blue {
+  color: blue;
+  display: inline;
+  font-weight: bold;
+}
+
+/*사이 검은 선*/
+.divider {
+  background-color: black;
+  width: 1px;
+  height: auto;
+}

@@ -1,0 +1,110 @@
+/* 전체 화면 body */
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 83.8vh;
+    background-color: #d7d7d7;
+}
+
+/* 회원가입 입력단 컨테이너 */
+.container-signup {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+}
+
+/* 제목 */
+h1, h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 라벨(입력 필드 이름)  */
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 입력 필드 */
+input {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background-color: #dedede;
+}
+
+/* 입력란에 임시문구 */
+input::placeholder {
+    font-size: 14px;
+    font-family: Arial;
+    color: #aaa;
+}
+
+/* 제출 버튼 */
+button[type="submit"] {
+    width: 80%;
+    padding: 5px;
+    border: none;
+    background-color: black;
+    margin-top: 2px;
+    color: white;
+    font-size: 16px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+/* 호버기능 */
+button[type="submit"]:hover {
+    background-color: #333;
+}
+
+/* 중복확인 버튼 */
+#check-nickname-duplicate,
+#check-email-duplicate{
+    background-color: #2c2c2c;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap; /* 버튼 글자 줄바꿈 방지 */
+}
+/* 중복확인 버튼 호버기능 */
+#check-nickname-duplicate:hover,
+#check-email-duplicate:hover {
+    background-color: #161616;
+    color: white;
+}
+
+/* 경고문구 메세지 */
+.validation-message {
+    font-size: 0.7rem;
+    min-height: 17px;
+    margin-top: -10px; /* 입력 필드와 간격 조정 */
+    margin-bottom: 1px; /* 다음 필드와 간격 조정 */
+    margin-left: 7px; /* 7px 들여쓰기
+}
+
+/* p태그 글자 전체 작게 */
+p {
+    font-size: 0.8rem; /* 글자 크기 작게 */
+    color: gray; /* 기본 글자 색상 */
+}
+
+/* 로그인 링크 스타일 */
+.login-link {
+    text-decoration: underline; /* 밑줄 */
+}
+
+/* 로그인 링크 호버기능 */
+.login-link:hover {
+    color: darkgray; /* 마우스를 올리면 더 진한 회색 */
+}

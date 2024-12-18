@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<body>
+
+<th:block layout:fragment="MainBodyContents">
+  <div class="container mt-4" style="height: 950px;">
+    <h1 class="text-center mb-3" style="cursor: pointer;" onclick="window.location.href='/admin/userList'">사용자 관리</h1>
+
+
+    <!-- 상단 -->
+    <form class="row mb-3 align-items-center" th:action="@{/admin/userList}" method="POST">
+      <input type="hidden" name="sortBy" th:value="${sortBy}"> <!-- 정렬 col -->
+      <input type="hidden" name="direction" th:value="${direction}"> <!-- 정렬 방식 -->
+      <!-- 라벨 -->
+      <div class="col-md-1">
+        <label for="filterDropdown" >검색 필터</label>
+      </div>
+
+      <!-- 드롭다운 email or nickname -->
+      <div class="col-md-2">
+        <select class="form-select" name="filterDropdown" id="filterDropdown">
+          <option value="email" th:selected="${filterDropdown == 'email'}">email</option>
+          <option value="nickname" th:selected="${filterDropdown == 'nickname'}">nickname</option>
+        </select>
+      </div>
+
+      <!-- 검색 입력란 -->
+      <div class="col-md-7">
+        <input type="text" class="form-control" name="findInput" id="findInput" placeholder="입력란" th:value="${findInput}">
+      </div>
+
+      <!-- 조회 버튼 -->
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">조회</button>
+      </div>
+    </form>
+    <!-- 상단 끝 -->
+
+    <!-- 상단과 중단 사이 -->
+    <form id="deleteForm" th:action="@{/admin/deleteUserList}" method="POST">
+      <input type="hidden" name="page" th:value="${users.number}"> <!-- 현재 페이지 -->
+      <input type="hidden" name="filterDropdown" th:value="${filterDropdown}"> <!-- 필터 유지 -->
+      <input type="hidden" name="findInput" th:value="${findInput}"> <!-- 검색 유지 -->
+      <input type="hidden" name="userIds" id="userIds"> <!-- 체크박스 데이터 저장 -->
+      <input type="hidden" name="sortBy" th:value="${sortBy}">
+      <input type="hidden" name="direction" th:value="${direction}">
+
+      <div class="row mb-3 align-items-center">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-danger" onclick="collectAndSubmit()">삭제</button> <!-- 삭제 버튼 -->
+        </div>
+        <div class="col-md-6 text-end">
+          <span>검색 결과: <strong th:text="${users.content.size()}">0</strong>건</span> <!-- 검색 건수 -->
+        </div>
+      </div>
+    </form>
+      <!-- 상단과 중단 사이 끝 -->
+
+      <!-- 중단 유저 리스트 -->
+      <div class="d-flex justify-content-center">
+        <table id="userTable" class="table table-bordered">
+          <thead class="table-dark">
+          <tr>
+            <!-- 체크박스 -->
+            <th scope="col" class="col-1 text-center" style="width: 5%;">
+              <input type="checkbox" id="selectAll" onclick="toggleCheckboxes(this)">
+            </th>
+            <!-- 번호 -->
+            <th scope="col" class="col-1 text-center" style="cursor: pointer;">
+              <form method="POST" th:action="@{/admin/userList}">
+                <input type="hidden" name="sortBy" value="userId">
+                <input type="hidden" name="direction" th:value="${sortBy == 'userId' && direction == 'asc' ? 'desc' : 'asc'}">
+                <input type="hidden" name="filterDropdown" th:value="${filterDropdown}">
+                <input type="hidden" name="findInput" th:value="${findInput}">
+                <button type="submit" class="btn btn-link text-light w-100">
+                  번호
+                  <span th:text="${sortBy == 'userId' ? (direction == 'asc' ? '▲' : '▼') : '▲'}"></span>
+                </button>
+              </form>
+            </th>
+            <!-- 이메일 -->
+            <th scope="col" class="col-3 text-center" style="cursor: pointer;">
+              <form method="POST" th:action="@{/admin/userList}">
+                <input type="hidden" name="sortBy" value="email">
+                <input type="hidden" name="direction" th:value="${sortBy == 'email' && direction == 'asc' ? 'desc' : 'asc'}">
+                <input type="hidden" name="filterDropdown" th:value="${filterDropdown}">
+                <input type="hidden" name="findInput" th:value="${findInput}">
+                <button type="submit" class="btn btn-link text-light w-100">
+                  이메일
+                  <span th:text="${sortBy == 'email' ? (direction == 'asc' ? '▲' : '▼') : '▲'}"></span>
+                </button>
+              </form>
+            </th>
+            <!-- 닉네임 -->
+            <th scope="col" class="col-3 text-center" style="cursor: pointer;">
+              <form method="POST" th:action="@{/admin/userList}">
+                <input type="hidden" name="sortBy" value="nickname">
+                <input type="hidden" name="direction" th:value="${sortBy == 'nickname' && direction == 'asc' ? 'desc' : 'asc'}">
+                <input type="hidden" name="filterDropdown" th:value="${filterDropdown}">
+                <input type="hidden" name="findInput" th:value="${findInput}">
+                <button type="submit" class="btn btn-link text-light w-100">
+                  닉네임
+                  <span th:text="${sortBy == 'nickname' ? (direction == 'asc' ? '▲' : '▼') : '▲'}"></span>
+                </button>
+              </form>
+            </th>
+            <!-- 역할 -->
+            <th scope="col" class="col-2 text-center" style="cursor: pointer;">
+              <form method="POST" th:action="@{/admin/userList}">
+                <input type="hidden" name="sortBy" value="userrole">
+                <input type="hidden" name="direction" th:value="${sortBy == 'userrole' && direction == 'asc' ? 'desc' : 'asc'}">
+                <input type="hidden" name="filterDropdown" th:value="${filterDropdown}">
+                <input type="hidden" name="findInput" th:value="${findInput}">
+                <button type="submit" class="btn btn-link text-light w-100">
+                  역할
+                  <span th:text="${sortBy == 'userrole' ? (direction == 'asc' ? '▲' : '▼') : '▲'}"></span>
+                </button>
+              </form>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:if="${users.content.isEmpty()}">
+            <td colspan="5" class="text-center">해당 사용자 정보가 없습니다.</td>
+          </tr>
+          <tr th:each="user : ${users.content}">
+            <td class="text-center"><input type="checkbox" name="userIds" th:value="${user.userId}"></td>
+            <td th:text="${user.userId}" class="text-center"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.nickname}"></td>
+            <td th:text="${user.userrole}"></td>
+          </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+
+
+    <!-- 하단 페이징 -->
+    <div class="d-flex justify-content-end mt-3">
+      <div class="pagination">
+        <form method="post" action="/admin/userList">
+          <input type="hidden" name="filterDropdown" th:value="${filterDropdown}"> <!-- 필터 유지 -->
+          <input type="hidden" name="findInput" th:value="${findInput}"> <!-- 검색 유지 -->
+          <input type="hidden" name="sortBy" th:value="${sortBy}">
+          <input type="hidden" name="direction" th:value="${direction}">
+          <ul class="pagination">
+            <!-- 페이징 버튼들 -->
+            <li class="page-item" th:classappend="${users.number > 0} ? '' : 'disabled'">
+              <button type="submit" class="page-link" name="page" value="0">맨 처음</button>
+            </li>
+            <li class="page-item" th:classappend="${users.hasPrevious} ? '' : 'disabled'">
+              <button type="submit" class="page-link" name="page" th:value="${users.number - 1}">이전</button>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(startPage, endPage)}">
+              <button type="submit" class="page-link" name="page" th:value="${i}" th:classappend="${i == users.number} ? 'active' : ''" th:text="${i + 1}"></button>
+            </li>
+            <li class="page-item" th:classappend="${users.hasNext} ? '' : 'disabled'">
+              <button type="submit" class="page-link" name="page" th:value="${users.number + 1}">다음</button>
+            </li>
+            <li class="page-item" th:classappend="${users.number < users.totalPages - 1} ? '' : 'disabled'">
+              <button type="submit" class="page-link" name="page" th:value="${users.totalPages - 1}">맨 마지막</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+    <!-- 하단 페이징 끝-->
+
+  </div>
+
+  <script th:src="@{/js/userList.js}"></script>
+</th:block>
+
+</body>
+</html>

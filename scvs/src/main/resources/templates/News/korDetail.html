@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- head part -->
+<head th:replace="~{layouts/head :: head}">
+    <title>korDetail</title>
+    <!-- 구글 폰트 '나눔 고딕' 링크 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!-- css part -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/newsDetail.css}">
+</th:block>
+
+<!-- header part -->
+<div th:replace="~{layouts/header :: header}"></div>
+
+<!-- Main Body Contents -->
+<th:block layout:fragment = "MainBodyContents">
+    <main class="news-detail-container">
+
+        <!-- 언론사 -->
+        <p class="source" th:text="${kor.source}"></p>
+        <!-- 기사 제목 -->
+        <p class="title" th:text="${kor.title}"></p>
+        <!-- 작성 시간 -->
+        <p class="publishedAt" th:text="${#temporals.format(kor.publishedAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+        <!-- 기사 이미지 -->
+        <div class="image">
+            <img th:if="${kor.imageLink != null}" th:src="${kor.imageLink}" alt="Unable to load image" class="article-image">
+        </div>
+        <!-- 기사 내용 -->
+        <div class="content" th:text="${kor.content}"></div>
+        <!-- 기사 원본 링크 -->
+        <div class="link">
+            <a th:href="${kor.link}" target="_blank" class="original-link">기사 원본 보러가기</a>
+        </div>
+
+        <!-- 목록으로 돌아가기 -->
+        <div class="button">
+            <a th:href="@{|/kor?page=${page}|}" class="back-button">목록으로 돌아가기</a>
+        </div>
+
+    </main>
+</th:block>
+
+<!-- footer part -->
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

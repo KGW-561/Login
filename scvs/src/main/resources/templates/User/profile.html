@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<body>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/userinfo.css}">
+</th:block>
+
+<!-- Main Body Contents -->
+<th:block layout:fragment="MainBodyContents">
+
+    <div class= "container-wrapper">
+        <div class="container-navi">
+            <!-- 왼쪽 사이드바 -->
+            <ul class = "navi-list">
+                <h4>내 정보</h4>
+                <hr>
+                <li><a class="nav-link" th:href="@{/user/profile}">내 상세정보</a></li>
+                <li><a class="nav-link" th:href="@{/user/passwordcheck}">비밀번호 변경</a></li>
+                <li><a class="nav-link" th:href="@{/user/accountdel}">회원 탈퇴</a></li>
+            </ul>
+        </div>
+
+        <div class="container-form">
+            <h2>내 상세정보</h2>
+            <!-- 사용자 정보 수정 폼 -->
+            <form th:action="@{/user/update}" th:object="${userDTO}" method="post">
+                <!-- Email 수정 입력-->
+                <div class="form-group">
+                    <label for="email">이메일: </label>
+                    <span id="current-email" th:text="*{email}">이메일 표시</span>
+                    <div>
+                        <input type="text" id="email" th:field="*{email}"  placeholder="이메일을 입력하세요"  />
+                        <button type="button" id="check-email-duplicate">중복확인</button>
+                        <div id="email-validation" class="validation-message"></div> <!-- 이메일 경고문구  -->
+                    </div>
+                </div>
+
+                <!-- Nickname 수정 입력-->
+                <div class="form-group">
+                    <label for="nickname">닉네임: </label>
+                    <span id="current-nickname" th:text="*{nickname}">닉네임 표시</span>
+                    <div>
+                        <input type="text" id="nickname"  th:field="*{nickname}" placeholder="닉네임을 입력하세요" />
+                        <button type="button" id="check-nickname-duplicate">중복확인</button>
+                        <div id="nickname-validation" class="validation-message"></div> <!-- 닉네임 경고문구  -->
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit">회원수정</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <script th:src="@{/js/profile.js}"></script>
+</th:block>
+
+</body>
+</html>

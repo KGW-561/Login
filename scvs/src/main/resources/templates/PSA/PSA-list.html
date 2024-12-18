@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/base}">
+<body>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/PSA.css}">
+</th:block>
+
+<th:block layout:fragment="MainBodyContents">
+    <div class="PSA-container">
+        <h1 class="PSA-title">공지사항</h1>
+
+        <!-- 검색 폼 -->
+        <form class="PSA-search-form" th:action="@{/PSA-list}" method="get">
+            <input type="text" name="query" placeholder="제목으로 검색" th:value="${query}">
+            <button type="submit">검색</button>
+        </form>
+
+        <!-- 공지사항 목록 -->
+        <table class="PSA-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="psa : ${psas}"> <!-- <변경됨> 'psaEntity'를 'psa'로 수정, DTO와 호환 -->
+                <td th:text="${psa.id}">1</td> <!-- <변경됨> id는 PSADTO의 필드 -->
+                <td>
+                    <a th:href="@{/PSA-detail/{id}(id=${psa.id})}" th:text="${psa.title}">공지사항 제목</a>
+                </td>
+                <td th:text="${#temporals.format(psa.publishedAt, 'yyyy-MM-dd HH:mm')}">2024-11-20</td>
+            </tr>
+            <!-- 검색 결과가 없을 경우 -->
+            <tr th:if="${psas.isEmpty()}">
+                <td colspan="3" style="text-align: center;">검색 결과가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 공지추가 버튼 -->
+        <div class="PSA-add-button" sec:authorize="hasRole('ROLE_ADMIN')" style="margin-top: 20px;">
+            <a href="/PSA-add" class="btn btn-primary">공지 추가</a>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="PSA-pagination" th:if="${totalPages > 1}">
+            <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+                <a th:href="@{/PSA-list(page=${pageNum}, query=${query})}"
+                   th:classappend="${currentPage == pageNum} ? 'active' : ''">
+                   <span th:text="${pageNum}">1</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+/* 중앙 메뉴의 크기 설정 */
+.custom-menu .nav-link {
+    min-width: 100px;         /* 메뉴 항목의 고정 크기 */
+    text-align: center;   /* 텍스트를 중앙 정렬 */
+}
+
+.account-menu .nav-link {
+    min-width: 100px;         /* 메뉴 항목의 고정 크기 */
+    text-align: center;   /* 텍스트를 중앙 정렬 */
+}
+
+@media screen and (max-width: 992px) {
+    .custom-menu .nav-link {
+        text-align: right;
+        margin-bottom: 1px;/* 텍스트를 중앙 정렬 */
+    }
+
+    .account-menu .nav-link {
+        text-align: right;
+        margin-bottom: 1px;
+    }
+}
+
+.btn-account-sign {
+    background: #515151;
+    color: white;
+}
+
+.btn-login-out{
+    background: black;
+    color: white;
+}
+
+
+/* 메뉴 항목들 간 간격 조정 */
+.custom-menu .nav-item {
+    margin: 0 5px; /* 항목들 간의 간격 */
+}
+
+.account-menu .nav-item {
+    margin: 0 5px; /* 항목들 간의 간격 */
+}
+
+/* 헤더와 본문 분리용 그림자 효과 */
+.navbar {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}

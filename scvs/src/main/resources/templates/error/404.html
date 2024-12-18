@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<body>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</th:block>
+<th:block layout:fragment="MainBodyContents">
+    <!-- 메인 뷰 -->
+    <div class="container error">
+        <div class="index">
+            <img src="images/error/error404.png">
+            <h1>404 ERROR</h1>
+            <div class="index-con mt-4">
+                <h3>화면을 찾지 못했습니다.</h3>
+                <p>주소를 확인하거나 권한을 확인해주세요.</p>
+                <a class="btn home-btn" th:href="@{/}">홈으로</a>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

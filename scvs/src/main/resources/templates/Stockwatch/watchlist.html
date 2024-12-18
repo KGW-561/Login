@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/watchlist.css}">
+</th:block>
+<body>
+<th:block layout:fragment="MainBodyContents">
+    <div class="container">
+        <!-- 왼쪽: 관심 목록 테이블 -->
+        <div class="watchlist-wrapper">
+            <h3 class="title-position">내 관심 종목</h3>
+            <div class="watchlist" style = "overflow-y: auto; height: 700px;">
+                <form id="watchlistSearchForm" class="watchlistSearchForm"> <!--검색 창 -->
+                    <div class="mb-3">
+                        <input id="watchlistSearchInput" type="text" class="watchlistSearchInput" placeholder="Search">
+                        <button id="cancelSearchBtn" type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+                <table id="watchlistTable" class="watchlistTable"> <!--왼쪽 관심 종목 테이블 -->
+                    <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Code</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="forTablecolor" th:if="${watchlistStocks.isEmpty()}">
+                        <td colspan="3" style="text-align: center;">
+                            전체 관심 종목 리스트에서 관심 있는 종목들을 추가하세요.
+                        </td>
+                    </tr>
+                    <tr class="forTablecolor" th:each="stock : ${watchlistStocks}">
+                        <td>
+                            <a th:href="@{/stockwatch(tickerId=${stock.ticker.tickerId})}" th:text="${stock.ticker.company}">
+                                Company
+                            </a>
+                        </td>
+                        <td>
+                            <!-- 길이가 6자일 경우 kor.png -->
+                            <img th:if="${stock.ticker.symbol != null && #strings.length(stock.ticker.symbol) == 6}"
+                                 th:src="@{'images/indicesForex/kor.png'}"
+                                 alt="kor image"
+                                 width="30" height="30"/>
+
+                            <!-- 길이가 6자가 아닌 경우 usa.png -->
+                            <img th:if="${stock.ticker.symbol != null && #strings.length(stock.ticker.symbol) != 6}"
+                                 th:src="@{'images/indicesForex/usa.png'}"
+                                 alt="usa image"
+                                 width="30" height="30"/>
+
+                            <!-- Symbol 텍스트 -->
+                            <span th:text="${stock.ticker.symbol}"></span>
+                        </td>
+                        <td>
+                            <form th:action="@{/watchlist/delete}" method="post">
+                                <input type="hidden" name="userId" th:value="${userId}">
+                                <input type="hidden" name="watchlistId" th:value="${stock.userWatchlist.userWatchlistId}">
+                                <input type="hidden" name="tickerId" th:value="${stock.ticker.tickerId}">
+                                <button class="deleteBtnColor" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="loadMoreContainer"> <!-- 왼쪽 더 보기 -->
+                    <button id="loadMoreBtn" class="loadMoreBtn">더보기</button>
+                </div>
+            </div>
+        </div>
+
+        <!--내 관심 종목, 전체 관심 종목 사이 선 -->
+        <div class="divider"></div>
+        <!-- 오른쪽: 전체 관심 종목 테이블 -->
+        <div class="alltickers-wrapper">
+            <h3 class="title-position">전체 관심 종목</h3>
+            <div class="allTickers" style = "overflow-y: auto; height: 700px;">
+                <form id="allTickerSearchForm" class="allTickerSearchForm"><!-- 검색창-->
+                    <div class="mb-3">
+                        <input id="allTickersSearchInput" type="text" class="allTickersSearchInput" placeholder="Search">
+                        <button id="cancelALLTickersSearchBtn" type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+                <table id="allTickersTable" class="allTickersTable"> <!--오른쪽 관심 목록 테이블-->
+                    <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Code</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="forTablecolor" th:each="ticker : ${allTickers}">
+                        <td th:text="${ticker.company}">Company</td>
+                        <td>
+                            <!-- 길이가 6자일 경우 kor.png -->
+                            <img th:if="${ticker.symbol != null && #strings.length(ticker.symbol) == 6}"
+                                 th:src="@{'images/indicesForex/kor.png'}"
+                                 alt="kor image"
+                                 width="30" height="30"/>
+
+                            <!-- 길이가 6자가 아닌 경우 usa.png -->
+                            <img th:if="${ticker.symbol != null && #strings.length(ticker.symbol) != 6}"
+                                 th:src="@{'images/indicesForex/usa.png'}"
+                                 alt="usa image"
+                                 width="30" height="30"/>
+
+                            <!-- Symbol 텍스트 -->
+                            <span th:text="${ticker.symbol}"></span>
+                        </td>
+                        <td>
+                            <form th:action="@{/watchlist/add}" method="post">
+                                <input type="hidden" name="userId" th:value="${userId}">
+                                <input type="hidden" name="watchlistId" th:value="${watchlistId}">
+                                <input type="hidden" name="tickerId" th:value="${ticker.tickerId}">
+                                <button class="addBtnColor" type="submit">Add</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="allTickersLoadMoreContainer"> <!-- 더 보기-->
+                    <button id="allTickersLoadMoreBtn" class="allTickersLoadMoreBtn">더보기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/watchlist.js}"></script>
+</th:block>
+
+</body>
+</html>

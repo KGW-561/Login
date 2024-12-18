@@ -1,0 +1,107 @@
+.container-wrapper {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 83.8vh;
+    padding: 100px;
+    background-color: #d7d7d7;
+}
+
+.container-navi {
+    background: white;
+    height: 70vh;
+    padding: 10px;
+    margin: 50px;
+    border-radius: 15px;
+    border: 5px solid black;
+    width: 300px;
+}
+.navi-list {
+  list-style: none;
+  padding: 0;
+  margin: 5px;
+}
+.navi-list li {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.container-form {
+    background: white;
+    height: 70vh;
+    padding: 30px;
+    margin: 50px;
+    border-radius: 15px;
+    border: 5px solid black;
+    width: 1000px;
+}
+
+/* 입력 필드 */
+input {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background-color: #dedede;
+}
+/* 제출 버튼 */
+button[type="submit"] {
+    width: 80%;
+    padding: 5px;
+    border: none;
+    background-color: black;
+    margin-top: 2px;
+    color: white;
+    font-size: 16px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+/* 호버기능 */
+button[type="submit"]:hover {
+    background-color: #333;
+}
+/* 중복확인 버튼 */
+#check-nickname-duplicate,
+#check-email-duplicate{
+    background-color: #2c2c2c;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap; /* 버튼 글자 줄바꿈 방지 */
+}
+/* 중복확인 버튼 호버기능 */
+#check-nickname-duplicate:hover,
+#check-email-duplicate:hover {
+    background-color: #161616;
+    color: white;
+}
+/* 중복확인 버튼 */
+#check-nickname-duplicate,
+#check-email-duplicate{
+    background-color: #2c2c2c;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap; /* 버튼 글자 줄바꿈 방지 */
+}
+/* 중복확인 버튼 호버기능 */
+#check-nickname-duplicate:hover,
+#check-email-duplicate:hover {
+    background-color: #161616;
+    color: white;
+}
+
+/* 경고문구 메세지 */
+.validation-message {
+    font-size: 0.7rem;
+    min-height: 17px;
+    margin-top: -10px; /* 입력 필드와 간격 조정 */
+    margin-bottom: 1px; /* 다음 필드와 간격 조정 */
+    margin-left: 7px; /* 7px 들여쓰기*/
+}
+
+

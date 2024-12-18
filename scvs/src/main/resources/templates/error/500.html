@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<body>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</th:block>
+<th:block layout:fragment="MainBodyContents">
+    <!-- 메인 뷰 -->
+    <div class="container error">
+        <div class="index">
+            <img src="images/error/error500.png">
+            <h1>500 ERROR</h1>
+            <div class="index-con mt-4">
+                <h3>서버에서 처리할 수 없는 오류가 발생했습니다.</h3>
+                <p>잠시 후 다시 시도해주세요. 문제가 계속되면 문의해 주세요.</p>
+                <a class="btn home-btn" th:href="@{/}">홈으로</a>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

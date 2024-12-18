@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="stat-item" th:fragment="statItem(image,title,value,beforeValue,beforePercent)">
+  <div class="stat-item-space">
+    <img th:src="${image}" alt="Index" width="20px" height="20px">
+    <p class="index-key"><th:block th:text="${title}"/></p>
+    <p class="index-value"><th:block th:text="${value}"/></p>
+    <br><br><br>
+  </div>
+  <p class="before-line">전일 대비
+    <p th:class="${beforeValue < 0} ? 'before-value-blue' : (${beforeValue == 0} ? 'before-value-dark' : 'before-value-red')">
+   <th:block th:text="${beforeValue > 0} ? '+' + ${beforeValue} : ${beforeValue}"/>
+    (<th:block th:text="${beforePercent > 0} ? '+' + ${beforePercent} : ${beforePercent}"/>%)</p>
+  </p>
+</div>
+
+</html>
